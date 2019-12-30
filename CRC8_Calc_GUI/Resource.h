@@ -4,6 +4,13 @@
 //
 #define IDR_MAINFRAME					128
 #define IDD_CRC8_CALC_GUI_DIALOG				102
+#define IDC_EDIT_SEQUENCE               1000
+#define IDC_BUTTON1                     1001
+#define IDC_BTN_CALC                    1001
+#define IDC_BTN_HEX                     1002
+#define IDC_BTN_DECIMAL                 1003
+#define IDC_LBL_RESULT                  1004
+#define IDC_TXT_RESULT                  1005
 
 // Next default values for new objects
 //

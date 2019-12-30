@@ -7,7 +7,14 @@
 #ifndef PCH_H
 #define PCH_H
 
+#pragma comment (lib,"Report_Error_DLL.lib")
+
 // add headers that you want to pre-compile here
 #include "framework.h"
+#include <wchar.h>
+#include <stdint.h>
+#include <assert.h>
+#include <list>
+#include "Report_Error_DLL.h"
 
 #endif //PCH_H
