@@ -71,7 +71,9 @@ unsigned char crc8(unsigned char data, unsigned char crc_init)
    {
       if (crc & 0x80)
       {
-         polynom = (unsigned char) 0x9B;
+#if defined(CRC_EBUS)
+		  polynom = (unsigned char)0x9B;
+#endif
       }
       else
       {
@@ -92,7 +94,9 @@ unsigned char crc8(unsigned char data, unsigned char crc_init)
 
 UCHAR CalculateCRC( UCHAR *Data, int DataLen )
 {
-   UCHAR Crc = 0;
+#if defined(CRC_EBUS)
+	UCHAR Crc = 0;
+#endif
    for( int i = 0 ; i < DataLen ; ++i )
    {
       Crc = crc8(Data[i], Crc );
