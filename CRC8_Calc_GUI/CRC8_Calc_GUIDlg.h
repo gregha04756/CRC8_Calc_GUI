@@ -56,4 +56,17 @@ private:
 	wchar_t *m_next_token = NULL;
 	DECLARE_MESSAGE_MAP()
 
+public:
+	typedef enum tagCRCAlgorithmType {
+		CRC8_EBUS,
+		CRC8_AUTOSAR,
+		CRC8_SAE_J1850
+	} CRCALGORITHM;
+	CButton m_btn_ebus;
+	CButton m_btn_autosar;
+	CButton m_btn_sae_j1850;
+	afx_msg void OnBnClickedBtnEbus();
+	afx_msg void OnBnClickedBtnAutosar();
+	afx_msg void OnBnClickedBtnSaeJ1850();
+	CRCALGORITHM m_CRC_Algorihtm;
 };
