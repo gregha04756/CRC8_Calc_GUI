@@ -1,9 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.960
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32002.261
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CRC8_Calc_GUI", "CRC8_Calc_GUI\CRC8_Calc_GUI.vcxproj", "{DFDB7A9E-C29F-4693-B4FD-70FA13FE60C0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C3C72E7C-0C34-4ED7-BB5B-A76E3CF30249} = {C3C72E7C-0C34-4ED7-BB5B-A76E3CF30249}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Report_Error_DLL", "..\Report_Error_DLL\Report_Error_DLL\Report_Error_DLL.vcxproj", "{C3C72E7C-0C34-4ED7-BB5B-A76E3CF30249}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +26,14 @@ Global
 		{DFDB7A9E-C29F-4693-B4FD-70FA13FE60C0}.Release|x64.Build.0 = Release|x64
 		{DFDB7A9E-C29F-4693-B4FD-70FA13FE60C0}.Release|x86.ActiveCfg = Release|Win32
 		{DFDB7A9E-C29F-4693-B4FD-70FA13FE60C0}.Release|x86.Build.0 = Release|Win32
+		{C3C72E7C-0C34-4ED7-BB5B-A76E3CF30249}.Debug|x64.ActiveCfg = Debug|x64
+		{C3C72E7C-0C34-4ED7-BB5B-A76E3CF30249}.Debug|x64.Build.0 = Debug|x64
+		{C3C72E7C-0C34-4ED7-BB5B-A76E3CF30249}.Debug|x86.ActiveCfg = Debug|Win32
+		{C3C72E7C-0C34-4ED7-BB5B-A76E3CF30249}.Debug|x86.Build.0 = Debug|Win32
+		{C3C72E7C-0C34-4ED7-BB5B-A76E3CF30249}.Release|x64.ActiveCfg = Release|x64
+		{C3C72E7C-0C34-4ED7-BB5B-A76E3CF30249}.Release|x64.Build.0 = Release|x64
+		{C3C72E7C-0C34-4ED7-BB5B-A76E3CF30249}.Release|x86.ActiveCfg = Release|Win32
+		{C3C72E7C-0C34-4ED7-BB5B-A76E3CF30249}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
