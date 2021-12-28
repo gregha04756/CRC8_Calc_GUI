@@ -57,16 +57,19 @@ private:
 	DECLARE_MESSAGE_MAP()
 
 public:
-	typedef enum tagCRCAlgorithmType {
+	enum class CRCALGORITHM {
 		CRC8_EBUS,
 		CRC8_AUTOSAR,
-		CRC8_SAE_J1850
-	} CRCALGORITHM;
+		CRC8_SAE_J1850,
+		CRC8_STM32_XOR_CHECKSUM
+	};
 	CButton m_btn_ebus;
 	CButton m_btn_autosar;
 	CButton m_btn_sae_j1850;
 	afx_msg void OnBnClickedBtnEbus();
 	afx_msg void OnBnClickedBtnAutosar();
 	afx_msg void OnBnClickedBtnSaeJ1850();
-	CRCALGORITHM m_CRC_Algorihtm;
+	CRCALGORITHM m_CRC_Algorithm;
+	uint8_t STM32_XOR_checksum( uint8_t * p_u8_seq_buf, size_t i_len);
+	afx_msg void OnBtnStm32xor();
 };

@@ -9,6 +9,7 @@
 #include "afxdialogex.h"
 #include "crc8sae_j1850.h"
 #include "crc8_autosar.h"
+#include <cstdint>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -23,6 +24,8 @@ CCRC8CalcGUIDlg::CCRC8CalcGUIDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_CRC8_CALC_GUI_DIALOG, pParent)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+	m_CRC_Algorithm = CCRC8CalcGUIDlg::CRCALGORITHM::CRC8_EBUS;
+	m_i_calls_ctr = 0;
 }
 
 void CCRC8CalcGUIDlg::DoDataExchange(CDataExchange* pDX)
@@ -50,6 +53,7 @@ BEGIN_MESSAGE_MAP(CCRC8CalcGUIDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BTN_EBUS, &CCRC8CalcGUIDlg::OnBnClickedBtnEbus)
 	ON_BN_CLICKED(IDC_BTN_AUTOSAR, &CCRC8CalcGUIDlg::OnBnClickedBtnAutosar)
 	ON_BN_CLICKED(IDC_BTN_SAE_J1850, &CCRC8CalcGUIDlg::OnBnClickedBtnSaeJ1850)
+	ON_COMMAND(IDC_BTN_STM32XOR, &CCRC8CalcGUIDlg::OnBtnStm32xor)
 END_MESSAGE_MAP()
 
 
@@ -67,7 +71,7 @@ BOOL CCRC8CalcGUIDlg::OnInitDialog()
 	// TODO: Add extra initialization here
 	m_Btn_Hex.SetCheck((int)BST_CHECKED);
 	m_btn_ebus.SetCheck((int)BST_CHECKED);
-	m_CRC_Algorihtm = CCRC8CalcGUIDlg::CRCALGORITHM::CRC8_EBUS;
+	m_CRC_Algorithm = CCRC8CalcGUIDlg::CRCALGORITHM::CRC8_EBUS;
 	m_i_calls_ctr = 0;
 	m_Btn_Calculate.EnableWindow(false);
 	m_Edit_Sequence.SetFocus();
@@ -166,16 +170,19 @@ void CCRC8CalcGUIDlg::OnClickedBtnCalc()
 		p_u8_seq_buf[i_x++] = *it_list_seq;
 	}
 	Data = &((UCHAR*)p_u8_seq_buf);
-	switch (m_CRC_Algorihtm)
+	switch (m_CRC_Algorithm)
 	{
-	case CRC8_EBUS:
+	case CCRC8CalcGUIDlg::CRCALGORITHM::CRC8_EBUS:
 		u8_CRC = CalculateCRC((UCHAR*)p_u8_seq_buf, i_len);
 		break;
-	case CRC8_AUTOSAR:
+	case CCRC8CalcGUIDlg::CRCALGORITHM::CRC8_AUTOSAR:
 		u8_CRC = crc8autosar_byte(0, (const void *)p_u8_seq_buf, (size_t)i_len);
 		break;
-	case CRC8_SAE_J1850:
+	case CCRC8CalcGUIDlg::CRCALGORITHM::CRC8_SAE_J1850:
 		u8_CRC = crc8sae_j1850_byte(0, (const void *)p_u8_seq_buf,(size_t)i_len);
+		break;
+	case CCRC8CalcGUIDlg::CRCALGORITHM::CRC8_STM32_XOR_CHECKSUM:
+		u8_CRC = STM32_XOR_checksum((uint8_t *)p_u8_seq_buf, (size_t)i_len);
 		break;
 	}
 	str_temp.Format(_T("0x%02x"), u8_CRC);
@@ -533,19 +540,37 @@ uint16_t CCRC8CalcGUIDlg::Base10_to_Base16(wchar_t *u8_arg, int size)
 void CCRC8CalcGUIDlg::OnBnClickedBtnEbus()
 {
 	// TODO: Add your control notification handler code here
-	m_CRC_Algorihtm = CCRC8CalcGUIDlg::CRCALGORITHM::CRC8_EBUS;
+	m_CRC_Algorithm = CCRC8CalcGUIDlg::CRCALGORITHM::CRC8_EBUS;
 }
 
 
 void CCRC8CalcGUIDlg::OnBnClickedBtnAutosar()
 {
 	// TODO: Add your control notification handler code here
-	m_CRC_Algorihtm = CCRC8CalcGUIDlg::CRCALGORITHM::CRC8_AUTOSAR;
+	m_CRC_Algorithm = CCRC8CalcGUIDlg::CRCALGORITHM::CRC8_AUTOSAR;
 }
 
 
 void CCRC8CalcGUIDlg::OnBnClickedBtnSaeJ1850()
 {
 	// TODO: Add your control notification handler code here
-	m_CRC_Algorihtm = CCRC8CalcGUIDlg::CRCALGORITHM::CRC8_SAE_J1850;
+	m_CRC_Algorithm = CCRC8CalcGUIDlg::CRCALGORITHM::CRC8_SAE_J1850;
+}
+
+void CCRC8CalcGUIDlg::OnBtnStm32xor()
+{
+	// TODO: Add your command handler code here
+	m_CRC_Algorithm = CCRC8CalcGUIDlg::CRCALGORITHM::CRC8_STM32_XOR_CHECKSUM;
+}
+
+uint8_t CCRC8CalcGUIDlg::STM32_XOR_checksum(uint8_t* p_u8_seq_buf, size_t i_len)
+{
+	uint8_t ui8_result = 0;
+	int i_x = 0;
+	ui8_result = (uint8_t)(*p_u8_seq_buf);
+	for (i_x = 1; i_x < i_len; i_x++)
+	{
+		ui8_result ^= p_u8_seq_buf[i_x];
+	}
+	return ui8_result;
 }
